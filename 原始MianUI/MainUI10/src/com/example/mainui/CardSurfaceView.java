@@ -25,7 +25,7 @@ public class CardSurfaceView extends GLSurfaceView {
 	public CardMap [] cardMaps;
 	public static int currentId;
 	private TransformControl tfControl;
-	int left_right = 0,downId=0;//≈–∂œ◊Û”“£¨”–√ª”–move
+	int left_right = 0,downId=0;//ÔøΩ–∂ÔøΩÔøΩÔøΩÔøΩ“£ÔøΩÔøΩÔøΩ√ªÔøΩÔøΩmove
 	
 	private float previousX = 0f,temp=0f;
 	private long previousTime = 0l;
@@ -36,7 +36,7 @@ public class CardSurfaceView extends GLSurfaceView {
 		mRenderer = new MyRenderer();
 		this.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 		this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-		this.setZOrderOnTop(true);//linearlayout ±≥æ∞œ‘ æ»´
+		this.setZOrderOnTop(true);//linearlayout ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ æ»´
 		this.setRenderer(mRenderer);
 		this.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 		this.requestRender();
@@ -55,7 +55,7 @@ public void onResume() {
 		
 		switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN:
-				downId=0;//≈–∂œ «∑Òmove
+				downId=0;//ÔøΩ–∂ÔøΩÔøΩ«∑ÔøΩmove
 				previousX = x;
 				temp=x;
 				previousTime = time;
@@ -68,7 +68,7 @@ public void onResume() {
 				if((int)x-1>(int)temp)
 				{
 					tfControl.transformMove(x-previousX,time-previousTime);
-					left_right = 1;
+					left_right = 1;  //Âè≥Áßª
 					Log.d("#########", "right"+x);
 				}
 				if((int)x+1<(int)temp)
@@ -115,13 +115,13 @@ public void onResume() {
 		}else if(index>120&&index<240.0f){
 			currentId-=1;
 		}else if(index>240f&&index<750f){
-			//÷–º˛ ¬º˛¥¶¿Ì°≠°≠Ã¯◊™
+			//ÔøΩ–ºÔøΩÔøΩ¬ºÔøΩÔøΩÔøΩÔøΩ?ÔøΩÔøΩÔøΩÔøΩ◊™
 			if(time>1000)
 			{
-				Toast.makeText(context, "long time click", 1000).show();//≥§∞¥
+				Toast.makeText(context, "long time click", 1000).show();//ÔøΩÔøΩÔøΩÔøΩ
 			}else
 			{
-				//∂Ã∞¥
+				//ÔøΩÃ∞ÔøΩ
 				Intent intent=new Intent();
 				intent.setClassName("com.zhonghong.ipod", "com.zhonghong.ipod.MainActivity");
 				context.startActivity(intent);
@@ -154,6 +154,7 @@ public void onResume() {
 		
 		public void onDrawFrame(GL10 gl) {
 			// TODO Auto-generated method stub
+			Log.e("chenli", "onDrawFrame");
 			gl.glClear(GL10.GL_DEPTH_BUFFER_BIT|GL10.GL_COLOR_BUFFER_BIT);
 			gl.glShadeModel(GL10.GL_SMOOTH);
 			gl.glEnable(GL10.GL_DEPTH_TEST);
@@ -167,7 +168,7 @@ public void onResume() {
 			
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			
-			if(cards != null && cards.length>0){//“∆≤ªµΩ◊Ó∫Û
+			if(cards != null && cards.length>0){//ÔøΩ∆≤ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
 				if(currentId > cards.length){
 					currentId = cards.length-1;
 				}else if(currentId<-1)
@@ -269,7 +270,7 @@ public void onResume() {
 			gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 			gl.glClearColor(0, 0, 0, 0);
 			gl.glShadeModel(GL10.GL_SMOOTH);
-			//wendan //Õº∆¨±ﬂ‘¥√ª∫⁄±ﬂ
+			//wendan //Õº∆¨ÔøΩÔøΩ‘¥√ªÔøΩ⁄±ÔøΩ
 		    gl.glEnable(GL10.GL_BLEND);  
 		    gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);  
 		  

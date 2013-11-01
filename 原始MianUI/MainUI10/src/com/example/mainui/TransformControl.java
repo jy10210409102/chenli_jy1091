@@ -73,7 +73,7 @@ public class TransformControl {
 			//CardSurfaceView.currentId -= index;
 			setMoveRight();
 		}
-		//ÒÆ¶¯ËÙ¶È¿ØÖÆ
+		//ï¿½Æ¶ï¿½ï¿½Ù¶È¿ï¿½ï¿½ï¿½
 		if(dv>=2)
 		{
 			CardSurfaceView.currentId -= 2;	
@@ -176,7 +176,7 @@ public class TransformControl {
 		tf.rotateY = ra;
 	}
 	
-	//wendan  //ÊÂ¼þËõ·Å
+	//wendan  //ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	public void tranformzoomRun(Transform btf,int currentId,int i){
 		if(zoom_ant!=1)
 		{
@@ -194,7 +194,7 @@ public class TransformControl {
 			}
 			if(Math.abs(btf.translateX)<=15)
 			{
-				zoomindex++;//½øÈëÏÂÒ»¶¯»­
+				zoomindex++;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 			}
 			if(Math.abs(btf.translateX)<=2*MC)
 			{
@@ -212,7 +212,7 @@ public class TransformControl {
 			}
 			if(Math.abs(btf.translateX)<=15)
 			{
-				zoomindex++;//½øÈëÏÂÒ»¶¯»­
+				zoomindex++;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 			}
 			if(Math.abs(btf.translateX)<=MC)
 			{
@@ -230,7 +230,7 @@ public class TransformControl {
 			}
 			if(Math.abs(btf.translateX)<=15)
 			{
-				zoomindex=0;//¶¯»­½áÊø
+				zoomindex=0;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				zoom_ant=0;
 				Intent intent=new Intent();
 				intent.setClassName("com.zhonghong.ipod", "com.zhonghong.ipod.MainActivity");
@@ -240,88 +240,71 @@ public class TransformControl {
 		
 	}
 	//move
-	public void tranformmoveRun(Transform btf,int currentId,int i,int rightleft){
-		if(!isMoving()){
+	public void tranformmoveRun(Transform btf, int currentId, int i,
+			int rightleft) {
+		if (!isMoving()) {
 			return;
 		}
-		if(rightleft==1)
-		{
-			btf.translateX+=10;
-			
-		}else
-		{
-			btf.translateX-=10;
+		if (rightleft == 1) {
+			btf.translateX += 10;
+
+		} else {
+			btf.translateX -= 10;
 		}
-		if(rightleft==1)
-		{
-			if(btf.translateX>=0)
-			{
-				btf.translateZ-=8;
+
+		if (rightleft == 1) {
+			if (btf.translateX >= 0) {
+				btf.translateZ -= 8;
+			} else {
+				btf.translateZ += 8;
 			}
-			else
-			{
-				btf.translateZ+=8;
+			if (Math.abs(btf.translateX) < MC) {
+				btf.rotateY -= 4;
 			}
-			if(Math.abs(btf.translateX)<MC)
-			{
-				btf.rotateY-=4;
+		} else {
+			if (btf.translateX <= 0) {
+				btf.translateZ -= 8;
+			} else {
+				btf.translateZ += 8;
 			}
-		}else
-		{
-			if(btf.translateX<=0)
-			{
-				btf.translateZ-=8;
-			}
-			else
-			{
-				btf.translateZ+=8;
-			}
-			if(Math.abs(btf.translateX)<MC)
-			{
-				btf.rotateY+=4;
+			if (Math.abs(btf.translateX) < MC) {
+				btf.rotateY += 4;
 			}
 		}
-		
-		if(Math.abs(btf.translateX)<10)
-		{
-			btf.translateZ=0;
-			btf.rotateY=0;
+
+		if (Math.abs(btf.translateX) < 10) {
+			btf.translateZ = 0;
+			btf.rotateY = 0;
 		}
-		if(Math.abs(btf.rotateY)==12)
-		{
+		if (Math.abs(btf.rotateY) == 12) {
 
 		}
-		if(btf.translateX<=MC/2+5&&btf.translateX>MC/2-5)
-		{
-			if(rightleft==1)
-			{
+		if (btf.translateX <= MC / 2 + 5 && btf.translateX > MC / 2 - 5) {
+			if (rightleft == 1) {
 				CardSurfaceView.currentId -= 1;
-			}
-			else
-			{
+			} else {
 				CardSurfaceView.currentId += 1;
 			}
 		}
-		
-//		if(rightleft==1)
-//		{
-//
-//				btf.rotateY -=5;
-//
-//		}else
-//		{
-//				btf.rotateY+=5;
-//		}
-		if(btf.rotateY>MA)
-		{
-			btf.rotateY=MA;
+
+		// if(rightleft==1)
+		// {
+		//
+		// btf.rotateY -=5;
+		//
+		// }else
+		// {
+		// btf.rotateY+=5;
+		// }
+		if (btf.rotateY > MA) {
+			btf.rotateY = MA;
 		}
-		if(btf.rotateY<-MA)
-		{
-			btf.rotateY=-MA;
+		if (btf.rotateY < -MA) {
+			btf.rotateY = -MA;
 		}
 	}
-	//end
+
+	// end
 	
 	public void tranformRun(Transform btf,int currentId,int i,int rightleft){
 //		if(!isMoving()){
