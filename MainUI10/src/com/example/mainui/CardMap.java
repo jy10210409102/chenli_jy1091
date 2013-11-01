@@ -4,7 +4,8 @@
 package com.example.mainui;
 
 /**
- * @author Administrator
+ * 封装了，id、大小（texId<纹理唯一号>、width、height）
+ * @author zhonghong.chenli
  *
  */
 public class CardMap {

@@ -48,6 +48,8 @@ public class MainActivity extends Activity {
 //		
 //		setContentView(surfaceview);
 //		
+		
+		//chenli  获取屏幕信息
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		int height = dm.heightPixels;

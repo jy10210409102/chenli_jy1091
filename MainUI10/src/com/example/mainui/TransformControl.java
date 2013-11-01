@@ -15,6 +15,8 @@ import android.util.Log;
 
 
 /**
+ * 
+ * å˜å½¢æŽ§åˆ¶ç±»
  * @author Administrator
  *
  */
@@ -73,7 +75,7 @@ public class TransformControl {
 			//CardSurfaceView.currentId -= index;
 			setMoveRight();
 		}
-		//ÒÆ¶¯ËÙ¶È¿ØÖÆ
+		//ï¿½Æ¶ï¿½ï¿½Ù¶È¿ï¿½ï¿½ï¿½
 		if(dv>=2)
 		{
 			CardSurfaceView.currentId -= 2;	
@@ -176,7 +178,7 @@ public class TransformControl {
 		tf.rotateY = ra;
 	}
 	
-	//wendan  //ÊÂ¼þËõ·Å
+	//wendan  //ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	public void tranformzoomRun(Transform btf,int currentId,int i){
 		if(zoom_ant!=1)
 		{
@@ -194,7 +196,7 @@ public class TransformControl {
 			}
 			if(Math.abs(btf.translateX)<=15)
 			{
-				zoomindex++;//½øÈëÏÂÒ»¶¯»­
+				zoomindex++;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 			}
 			if(Math.abs(btf.translateX)<=2*MC)
 			{
@@ -212,7 +214,7 @@ public class TransformControl {
 			}
 			if(Math.abs(btf.translateX)<=15)
 			{
-				zoomindex++;//½øÈëÏÂÒ»¶¯»­
+				zoomindex++;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 			}
 			if(Math.abs(btf.translateX)<=MC)
 			{
@@ -230,7 +232,7 @@ public class TransformControl {
 			}
 			if(Math.abs(btf.translateX)<=15)
 			{
-				zoomindex=0;//¶¯»­½áÊø
+				zoomindex=0;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				zoom_ant=0;
 				Intent intent=new Intent();
 				intent.setClassName("com.zhonghong.ipod", "com.zhonghong.ipod.MainActivity");

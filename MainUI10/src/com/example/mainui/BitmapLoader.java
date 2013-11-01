@@ -16,6 +16,7 @@ import android.util.Log;
 
 
 /**
+ * 加载图片得到CardMap数组 CardMap数组记录所有要现实的的图片纹理和大小
  * @author Administrator
  *
  */
@@ -34,6 +35,10 @@ public class BitmapLoader {
 //			R.drawable.default_card_bmp_18,R.drawable.default_card_bmp_19,
 //			R.drawable.default_card_bmp_20
 //	};
+	
+	/**
+	 * 图片资源
+	 */
 	private static int [] drawables = {
 		R.drawable.app,R.drawable.btm,
 		R.drawable.dvd,R.drawable.gps,
@@ -44,18 +49,38 @@ public class BitmapLoader {
 		R.drawable.weather,R.drawable.photo,
 		R.drawable.music
 		};
+	
+	/**
+	 * 得到CardMap数组并把数组存在静态Constant<br/>
+	 * 陈立<br/>
+	 * @param gl 	GL10接口包含了Java（TM）程序语言为OpenGL绑定的核心功能。
+	 * @param res	context
+	 */
 	public static void loadTexturing(GL10 gl,Resources res){
 		CardMap [] cardMaps = new CardMap[drawables.length];
 		for(int i=0;i<drawables.length;i++){
-			cardMaps[i] = initTextureId(gl, res, drawables[i]);
+			cardMaps[i] = initTextureId(gl, res, drawables[i]);   //获得纹理
 		}
 		Constant.cardMaps = cardMaps;
 	}
 	
+	/**
+	 * 获得CardMap<br/>
+	 * 陈立<br/>
+	 * 纹理绑定
+	 * 在为纹理生成名称后，在为纹理提供图像数据之前，我们必须绑定纹理。绑定使得指定纹理处于活动状态。一次只能激活一个纹理。活动的或“被绑定”的纹理是绘制多边形时使用的纹理，也是新纹理数据将加载其上纹理，所以在提供图像数据前必须绑定纹理。
+	 *  gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
+	 *  绑定纹理数据，传入指定图片
+	 *  GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bmp, 0);   
+	 * @param gl  	GL10接口包含了Java（TM）程序语言为OpenGL绑定的核心功能。
+	 * @param res  	context
+	 * @param id    图片资源id
+	 * @return  	CardMap
+	 */
 	private static CardMap initTextureId(GL10 gl,Resources res,int id){
 		CardMap cardMap = new CardMap();
 		int [] textures = new int[1];
-		gl.glGenTextures(1, textures, 0);
+		gl.glGenTextures(1, textures, 0);   // glGenTextures () 函数生成一个唯一 号 
 		int curtextureId = textures[0];
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, curtextureId);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
@@ -67,7 +92,7 @@ public class BitmapLoader {
 		Bitmap bitmap = null;
 		try{
 			bitmap = BitmapFactory.decodeStream(is);
-			cardMap.texId = curtextureId;
+			cardMap.texId = curtextureId;  
 			cardMap.width = 350;//bitmap.getWidth();
 			cardMap.height = 300;//bitmap.getHeight();
 			Log.d("with", ""+cardMap.width+"height"+cardMap.height);
