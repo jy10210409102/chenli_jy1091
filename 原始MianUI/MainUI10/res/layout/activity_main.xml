@@ -1,0 +1,28 @@
+<FrameLayout android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/big4"
+xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout android:layout_width="fill_parent"
+    android:layout_height="400dp"
+    android:orientation="vertical"
+    android:id="@+id/gllinear">
+    
+</LinearLayout>
+    
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameid"
+        android:layout_marginTop="350dp"
+        android:layout_marginLeft="480dp"
+        android:text="TTTT"
+        android:textSize="35dp"
+        android:textColor="@android:color/white"/>
+    
+    <Button android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:layout_marginLeft="480dp"
+        android:id="@+id/test"
+        android:text="test"/>
+</FrameLayout>
