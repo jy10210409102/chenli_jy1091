@@ -319,31 +319,29 @@ public void onResume() {
 					}else{
 						j=i;
 					}
-					if(Math.abs(j-currentId)<VISABLE_OBJ_NUM/2){
-						
-						
-					
-					Card card = getCard(gl,j);//cards[i];
-					int nexti = i;
-//					if(tfControl.isMoveLeft()){
-//						nexti = i+1;
-//					}else if(tfControl.isMoveRight()){
-//						nexti = i-1;
-//					}
-					//变形
-					if(left_right==1||left_right==-1)
-					{
-						tfControl.tranformmoveRun(card.getTransform(),currentId,nexti,left_right);
-					}
-					else if(left_right==2)
-					{
-						tfControl.tranformRun(card.getTransform(),currentId,nexti,left_right);
-					}
-					
-					tfControl.tranformzoomRun(card.getTransform(),currentId,nexti);
-					
-					//画card
-					drawCard(gl,card);
+					if (Math.abs(j - currentId) < VISABLE_OBJ_NUM / 2) {
+
+						Card card = getCard(gl, j);// cards[i];
+						int nexti = i;
+						// if(tfControl.isMoveLeft()){
+						// nexti = i+1;
+						// }else if(tfControl.isMoveRight()){
+						// nexti = i-1;
+						// }
+						// 变形
+						if (left_right == 1 || left_right == -1) {
+							tfControl.tranformmoveRun(card.getTransform(),
+									currentId, nexti, left_right);
+						} else if (left_right == 2) {
+							tfControl.tranformRun(card.getTransform(),
+									currentId, nexti, left_right);
+						}
+
+						tfControl.tranformzoomRun(card.getTransform(),
+								currentId, nexti);
+
+						// 画card
+						drawCard(gl, card);
 					}
 
 				}
@@ -375,8 +373,19 @@ public void onResume() {
 			card =defCard[index%CACHED_OBJ_NUM];
 			bm=mcardsvl.getViewBitMap(null, index);
 			if(bm!=null){
-				
+				synchronized (mcardCache) {
+					removeDumpCachedcard(gl,card);
+				}
 			}
+			
+		}
+		
+		/**
+		 * 删除mcardCache中的card和对应gl中的唯一纹理ID
+		 * @param gl opengl
+		 * @param card mcardCache要移除的card
+		 */
+		private void removeDumpCachedcard(GL10 gl,Card card){
 			
 		}
 		private void drawCard(GL10 gl,Card card){
