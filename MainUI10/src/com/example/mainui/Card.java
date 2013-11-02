@@ -79,18 +79,24 @@ public class Card {
 	
 	
 	/**
-	 * 画自己
+	 * 画自己    Y轴上面没有变化
 	 * @param gl opengl的
 	 */
 	public void drawSelf(GL10 gl){
 		gl.glTranslatef(transform.translateX, 0, 0);
 		gl.glTranslatef(0, transform.translateY, 0);
 		gl.glTranslatef(0, 0, transform.translateZ);
-		
+	//	Log.e("chenli drawSelf", "transform.translateX="+transform.translateX +" y="+transform.translateY+ " Z="+transform.translateZ);
+		//chenli test start
+		//transform.rotateY =60;
+		//transform.rotateX =60; 
+		//transform.rotateZ=60;
+		//chenli test end
 		gl.glRotatef(transform.rotateX, 1, 0, 0);
 		gl.glRotatef(transform.rotateY, 0, 1, 0);
 		gl.glRotatef(transform.rotateZ, 0, 0, 1);
-	//	Log.d("#!!!######tfControl.transform.rotateY===",""+transform.translateX+" "+transform.translateY+" "+transform.translateZ);
+	//	Log.e("chenli", "transform.rotateX="+transform.rotateX+" transform.translateY="+transform.translateY+"transform.translateZ"+transform.translateZ);
+		//Log.d("#!!!######tfControl.transform.rotateY===",""+transform.translateX+" "+transform.translateY+" "+transform.translateZ);
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
@@ -100,6 +106,7 @@ public class Card {
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, cardMap.texId);
 		
 		gl.glDrawArrays(GL10.GL_TRIANGLE_FAN, 0, vCount);
+		
 	}
 	
 	

@@ -3,17 +3,15 @@
  */
 package com.example.mainui;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
@@ -23,6 +21,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.mainui.TransformControl.PlayingListener;
 
 /**
  * 显示主类<br/>
@@ -40,9 +40,9 @@ public class CardSurfaceView extends GLSurfaceView {
 	public View playView = null;
 	/** 回调接口CardSurfaceViewListen 对象 */
 	public CardSurfaceViewListen mcardsvl = null;
-	/** Cache保存一个强引用来限制内容数量，每当Item被访问的时候，此Item就会移动到队列的头部。当cache已满的时候加入新的item时，在队列尾部的item会被回收。*/
+	/** 容量为 CACHED_OBJ_NUM * ENTRY_SIZE（31*4）Cache保存一个强引用来限制内容数量，每当Item被访问的时候，此Item就会移动到队列的头部。当cache已满的时候加入新的item时，在队列尾部的item会被回收。*/
 	private LruCache<String, Card> mcardCache;// 
-	/** card数组*/
+	/** card数组 用做显示的card 固定大小存了CACHED_OBJ_NUM=31个 初始为默认图片纹理card*/
 	public Card[] defCard = null;
 	/** 默认的纹理id*/
 	public int idefTexId = -1; 					
@@ -101,10 +101,14 @@ public class CardSurfaceView extends GLSurfaceView {
 		
 	}
 	
+	public void setCardSurfaceViewListen(CardSurfaceViewListen msvl){
+		this.mcardsvl=msvl;
+	}
 	/**
-	 * 获得默认图片纹理 并存在idefTexId中 初始化 defCard
+	 * 获得默认图片纹理 并存在idefTexId中 初始化 defCard    在这里设定图片的大下
 	 */
 	public void genDefTextureCard(GL10 gl){
+		Log.e("chenli", "genDefTextureCard:获得默认图片纹理 并存在idefTexId中 初始化 defCard");
 		CardMap cmap = null;
 		Bitmap defbm = null;
 		defCard = new Card[CACHED_OBJ_NUM];  //初始化defCard
@@ -117,10 +121,10 @@ public class CardSurfaceView extends GLSurfaceView {
 			if( gl != null && tfControl != null){
 				cmap =new CardMap();
 				cmap.texId = idefTexId;
-				cmap.width = 200;
-				cmap.height = 250;
-				defCard[i] =new Card(cmap);
-				tfControl.initTransform(defCard[i].getTransform(),currentId, i);     // 变形 unknown 
+				cmap.width = 350;//350
+				cmap.height = 300;//300
+				defCard[i] =new Card(cmap);      
+				tfControl.initTransform(defCard[i].getTransform(),currentId, i);     //  初始化getTransform unknown 
 			}else{
 				Log.e("chenli", " tfControl="+tfControl +" gl"+gl );
 			}
@@ -128,7 +132,7 @@ public class CardSurfaceView extends GLSurfaceView {
 	}
 	
 	/**
-	 * 返回指定图片的纹理Id
+	 * 通过Bitmap对象返回纹理Id
 	 * @param gl opengl
 	 * @param bm 指定的图片
 	 * @return 纹理Id
@@ -273,7 +277,7 @@ public void onResume() {
 			cards = new Card[size];
 			int j = 0;
 			for(int i=0;i<size;i++){
-				if(j>=Constant.cardMaps.length/*test mcardsvl.getCount()*/){
+				if(j>=/*Constant.cardMaps.length*/ mcardsvl.getCount()){
 					j = 0;
 				}
 				cards[i] = new Card(Constant.cardMaps[j]);
@@ -287,7 +291,6 @@ public void onResume() {
 		 * 定义实际的绘图操作    一直在跑
 		 */
 		public void onDrawFrame(GL10 gl) {
-			// TODO Auto-generated method stub
 			//语句的作用是用当前缓冲区清除值，也就是glClearColor或者glClearDepth等函数所指定的值来清除指定的缓冲区
 			gl.glClear(GL10.GL_DEPTH_BUFFER_BIT|GL10.GL_COLOR_BUFFER_BIT);
 			gl.glShadeModel(GL10.GL_SMOOTH); //选择恒定或光滑着色模式。  这里是光滑着色模式
@@ -302,10 +305,13 @@ public void onResume() {
 			
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			
-			if(cards != null && cards.length>0){//�Ʋ������
-				if(currentId > cards.length){
-					currentId = cards.length-1;
-				}else if(currentId<-1)
+			if(/*cards != null && cards.length>0*/ mcardsvl.getCount()>0){//�Ʋ������
+				Log.e("chenli", "mcardsvl.getCount()="+mcardsvl.getCount());
+//				if(currentId > cards.length){
+//					currentId = cards.length-1;
+				if(currentId>=mcardsvl.getCount()){
+					currentId=mcardsvl.getCount()-1;
+				}else if(currentId<0)
 				{
 					currentId =0;
 				}
@@ -319,24 +325,25 @@ public void onResume() {
 					}else{
 						j=i;
 					}
-					if (Math.abs(j - currentId) < VISABLE_OBJ_NUM / 2) {
-
+					//j=i;
+					if (Math.abs(j - currentId) < VISABLE_OBJ_NUM / 2) {   //只刷新十一个
+						Log.e("chenli", "getCard(gl, j); j = "+ j+"  currentId="+currentId);
 						Card card = getCard(gl, j);// cards[i];
-						int nexti = i;
+						int nexti = j;
 						// if(tfControl.isMoveLeft()){
 						// nexti = i+1;
 						// }else if(tfControl.isMoveRight()){
 						// nexti = i-1;
 						// }
-						// 变形
-						if (left_right == 1 || left_right == -1) {
-							tfControl.tranformmoveRun(card.getTransform(),
-									currentId, nexti, left_right);
-						} else if (left_right == 2) {
+						// 变形 通过改变card的TransformControl对象的参数来通过drawCard画出图形
+						if (left_right == 1 || left_right == -1) {//左移或是右移 
+							tfControl.tranformmoveRun(card.getTransform(),currentId, nexti, left_right);
+						} else if (left_right == 2) {  			  //ontouch up的时候
 							tfControl.tranformRun(card.getTransform(),
 									currentId, nexti, left_right);
 						}
-
+						
+						//缩起来的动作
 						tfControl.tranformzoomRun(card.getTransform(),
 								currentId, nexti);
 
@@ -358,36 +365,74 @@ public void onResume() {
 			}
 		}
 		
-		
+		/**
+		 * 返回根据put的string值返回mcardCache保存的card  此方法相关部分为精髓代码
+		 * @param gl openGl
+		 * @param index 对应put的String的类型下标 
+		 * @return  指定的card
+		 */
 		private Card getCard(GL10 gl,int index){
 			Card card=null;
 			Bitmap bm=null;
 			int texId=-1;
 			synchronized (mcardCache) {
-				//如果缓冲中取出来不为空
-				if((card=mcardCache.get(Integer.toString(index)))!=null){
+				//如果缓冲中存在
+				if((card=mcardCache.get(Integer.toString(index)))!=null){   		//第一次进来为空
+					//Log.e("chenli", "getCard  mcardCache中card!=null");
 					return card;
 				}
 			}
-			//如果缓冲中取出来为空 则从所有中取
-			card =defCard[index%CACHED_OBJ_NUM];
-			bm=mcardsvl.getViewBitMap(null, index);
-			if(bm!=null){
+			//Log.e("chenli", "getCard  先初始化默认图片");
+			card =defCard[index%CACHED_OBJ_NUM];	//如果缓冲中取出来为空 则从card中取				
+			bm=mcardsvl.getViewBitMap(null, index); //获得实际图片
+			if(bm!=null){							//如果实际图片存在
 				synchronized (mcardCache) {
-					removeDumpCachedcard(gl,card);
+					removeDumpCachedcard(gl,card);	//如果缓存mcardCache中存在则删除
+					texId=genTextureId(gl, bm);		//获得通过接口对象取得的图片的纹理id
+					card.changeCardTexId(texId);	//改变纹理
+					mcardCache.put(Integer.toString(index), card); //把图片存入缓存
+					//Log.e("chenli", "初始化图片改成指定图片 并存入缓存mcardCache");
 				}
+			}else{
+				removeDumpCachedcard(gl, card);		//如果缓存mcardCache中存在则删除
+				card.changeCardTexId(idefTexId);	//设置为默认纹理
+				//Log.e("chenli", "不存在指定图片 用默认图片");
 			}
-			
+			return card;
 		}
 		
 		/**
-		 * 删除mcardCache中的card和对应gl中的唯一纹理ID
+		 * 如果mcardCache中存在card 则删除mcardCache中的card和对应gl中的唯一纹理ID
 		 * @param gl opengl
 		 * @param card mcardCache要移除的card
 		 */
 		private void removeDumpCachedcard(GL10 gl,Card card){
-			
+			Map<String,Card> mMap = null;
+			mMap = mcardCache.snapshot(); //返回一个map  遍历
+			if(mMap.containsValue(card)){							//如果mcardCache中存在card
+				Iterator it=mMap.entrySet().iterator();
+				while(it.hasNext()){								//遍历删除card和card对应的唯一纹理
+					Map.Entry entry=(Map.Entry)it.next();
+					if(entry.getValue().equals(card)){
+						int _itexid=-1;
+						mcardCache.remove((String)entry.getKey());
+						_itexid=card.getCardTexId();
+						if(_itexid!=idefTexId){	
+							gl.glDeleteTextures(1, new int[]{_itexid},0);
+						}
+						break;
+					}
+				}
+				
+				
+			}
 		}
+		
+		/**
+		 * 画出card
+		 * @param gl openGl
+		 * @param card 要画的card
+		 */
 		private void drawCard(GL10 gl,Card card){
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
@@ -396,6 +441,10 @@ public void onResume() {
 			gl.glPopMatrix();
 		}
 		
+		/**
+		 * drawCard
+		 * @param gl
+		 */
 		private void drawTransform(GL10 gl){
 			gl.glTranslatef(tfControl.transform.translateX, 0, 0);
 			gl.glTranslatef(0, -50, 0);
@@ -458,11 +507,12 @@ public void onResume() {
 		 */
 		public void onSurfaceCreated(GL10 gl, EGLConfig arg1) {
 			// TODO Auto-generated method stub
+			Log.e("chenli cardSurfaceView", "onSurfaceCreated");
 			gl.glDisable(GL10.GL_DITHER);
 			gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 			gl.glClearColor(0, 0, 0, 0);
 			gl.glShadeModel(GL10.GL_SMOOTH);
-			//wendan //ͼƬ��Դû�ڱ�
+			//wendan //ͼƬ��Դû�ڱ�       设置透明
 		    gl.glEnable(GL10.GL_BLEND);  
 		    gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);  
 		  
@@ -472,11 +522,22 @@ public void onResume() {
 		    gl.glAlphaFunc(GL10.GL_GREATER,0.4f);  
 			//end
 			//if(Constant.cardMaps == null || Constant.cardMaps.length == 0){
-				BitmapLoader.loadTexturing(gl, getResources());
+				//BitmapLoader.loadTexturing(gl, getResources());
 		//	}
 			tfControl = new TransformControl(context);
+			
+			tfControl.setPlayingListener(new PlayingListener() {   //chenli  回调函数
+				
+				@Override
+				public void piczoom() {
+					// TODO Auto-generated method stub
+					mcardsvl.onPlaying(-1);
+				}
+			});
+			
 			tfControl.transformShow();
-			refereshList(15,7);
+			genDefTextureCard(gl);
+			//refereshList(15,7);
 		}
 	}
 }

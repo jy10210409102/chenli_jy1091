@@ -13,8 +13,8 @@ public class Constant {
 	public static float WIDTH;
 	public static float HEIGHT;
 	
-	public final static float MX = 0;//ÓëÖĞ¼ä¿¨Æ¬ÏàÁÚµÄ¿¨Æ¬Ö®¼äµÄXÖá¾àÀë
-	public final static float MC = 105;//ÓëÖĞ¼ä¿¨Æ¬²»ÏàÁÚµÄ¿¨Æ¬Ö®¼äµÄXÖá¾àÀë
-	public final static float MZ = 80;//¿¨Æ¬Ö®¼äZÖáµÄ¾àÀë
-	public final static float MA = 40;//¿¨Æ¬Ğı×ªµÄ½Ç¶È
+	public final static float MX = 0;//æ²¡æœ‰ç”¨åˆ°
+	public final static float MC = 105;// xçš„è·ç¦»
+	public final static float MZ = 80;//  z
+	public final static float MA = 60;//  è§’åº¦
 }

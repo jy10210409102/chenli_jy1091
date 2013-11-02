@@ -15,6 +15,11 @@ public interface CardSurfaceViewListen {
 	 * @return 图片个数
 	 */
 	public int getCount();
+	/**
+	 * 目前没用到
+	 * @param position position
+	 * @return long
+	 */ 
 	public long getItemId(int position);
 	
 	/**

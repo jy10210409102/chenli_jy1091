@@ -120,6 +120,10 @@ public class TransformControl {
 		zoom_ant = 1;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public void transformShow(){
 		Thread thread = new Thread(new Runnable(){
 			boolean isShowFlag = true;
@@ -152,6 +156,7 @@ public class TransformControl {
 		}else{
 			rx = 0;
 		}
+		Log.e("chenli", "getTransformX rx= + rx");
 		return rx;
 	}
 	
@@ -169,6 +174,12 @@ public class TransformControl {
 			return 0;
 	}
 	
+	/**
+	 * 
+	 * @param tf
+	 * @param currentId
+	 * @param i
+	 */
 	public void initTransform(Transform tf,int currentId,int i){
 		float rx = getTransformX(currentId, i);
 		float rz = getTransformZ(currentId, i);
@@ -178,7 +189,21 @@ public class TransformControl {
 		tf.rotateY = ra;
 	}
 	
-	//wendan  //�¼�����
+	private PlayingListener listener =null;
+	public void setPlayingListener(PlayingListener listener){
+		this.listener =listener;
+	}
+	
+	public  interface PlayingListener{
+		void piczoom();
+	}
+	
+	/**
+	 *  缩起来的动作
+	 * @param btf
+	 * @param currentId
+	 * @param i
+	 */
 	public void tranformzoomRun(Transform btf,int currentId,int i){
 		if(zoom_ant!=1)
 		{
@@ -234,14 +259,18 @@ public class TransformControl {
 			{
 				zoomindex=0;//��������
 				zoom_ant=0;
-				Intent intent=new Intent();
-				intent.setClassName("com.zhonghong.ipod", "com.zhonghong.ipod.MainActivity");
-				context.startActivity(intent);
+				if(listener!=null){					//chenli
+					Log.e("chenli", "interface  回调");
+					listener.piczoom();
+				}  
+//				Intent intent=new Intent();
+//				intent.setClassName("com.zhonghong.ipod", "com.zhonghong.ipod.MainActivity");
+//				context.startActivity(intent);
 			}
 		}
 		
 	}
-	//move
+	//移动的时候画
 	public void tranformmoveRun(Transform btf,int currentId,int i,int rightleft){
 		if(!isMoving()){
 			return;
@@ -325,11 +354,17 @@ public class TransformControl {
 	}
 	//end
 	
+	/**
+	 * 计算它的坐标 一直跑
+	 * @param btf
+	 * @param currentId
+	 * @param i
+	 * @param rightleft
+	 */
 	public void tranformRun(Transform btf,int currentId,int i,int rightleft){
 //		if(!isMoving()){
-//			return;
+//			return; 
 //		}
-		
 		float targetX=getTransformX(currentId,i);
 		float targetZ=getTransformZ(currentId,i);
 		float targetA=getTransformA(currentId,i);
@@ -344,13 +379,14 @@ public class TransformControl {
 			btf.translateZ = targetZ;
 		}else{
 			btf.translateZ += ((float)(targetZ - btf.translateZ)/5);
-		}
+		} 
 		
 		if(Math.abs((targetA - btf.rotateY)) < 0.1f){
 			btf.rotateY = targetA;
 		}else{
 			btf.rotateY += ((float)(targetA - btf.rotateY)/4);
 		}
+		//Log.e("chenli", "i=" +i+" currentId = "+currentId+" tranformRun  btf.translateX="+btf.translateX+" targetA = "+targetA+" btf.translateZ="+btf.translateZ+"btf.rotateY="+btf.rotateY);
 //		if((i==currentId&&btf.rotateY ==targetA)&&rightleft!=2)
 //		{
 //			Log.d("11232", "qq##############"+CardSurfaceView.currentId);
