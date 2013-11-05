@@ -121,8 +121,8 @@ public class CardSurfaceView extends GLSurfaceView {
 			if( gl != null && tfControl != null){
 				cmap =new CardMap();
 				cmap.texId = idefTexId;
-				cmap.width = 350;//350
-				cmap.height = 300;//300
+				cmap.width = 172;//350
+				cmap.height = 216;//300
 				defCard[i] =new Card(cmap);      
 				tfControl.initTransform(defCard[i].getTransform(),currentId, i);     //  初始化getTransform unknown 
 			}else{
@@ -306,7 +306,7 @@ public void onResume() {
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			
 			if(/*cards != null && cards.length>0*/ mcardsvl.getCount()>0){//�Ʋ������
-				Log.e("chenli", "mcardsvl.getCount()="+mcardsvl.getCount());
+				//Log.e("chenli", "mcardsvl.getCount()="+mcardsvl.getCount());
 //				if(currentId > cards.length){
 //					currentId = cards.length-1;
 				if(currentId>=mcardsvl.getCount()){
@@ -327,7 +327,7 @@ public void onResume() {
 					}
 					//j=i;
 					if (Math.abs(j - currentId) < VISABLE_OBJ_NUM / 2) {   //只刷新十一个
-						Log.e("chenli", "getCard(gl, j); j = "+ j+"  currentId="+currentId);
+						//Log.e("chenli", "getCard(gl, j); j = "+ j+"  currentId="+currentId);
 						Card card = getCard(gl, j);// cards[i];
 						int nexti = j;
 						// if(tfControl.isMoveLeft()){

@@ -156,7 +156,6 @@ public class TransformControl {
 		}else{
 			rx = 0;
 		}
-		Log.e("chenli", "getTransformX rx= + rx");
 		return rx;
 	}
 	
@@ -275,42 +274,55 @@ public class TransformControl {
 		if(!isMoving()){
 			return;
 		}
+		float targetX=getTransformX(currentId,i);
+		float targetZ=getTransformZ(currentId,i);
+		float targetA=getTransformA(currentId,i);
 		if(rightleft==1)
 		{
-			btf.translateX+=10;
 			
-		}else
-		{
-			btf.translateX-=10;
+//			targetX=getTransformX(currentId,i+1);
+//			btf.translateX += ((float)(targetX - btf.translateX)/4);
+//			Log.e("chenli", "targetX="+targetX +"btf.translateX"+btf.translateX +"(targetX - btf.translateX)/4="+(targetX - btf.translateX)/4);
+//		
+			//btf.translateX+=10;
+			targetX=getTransformX(currentId,i+1);
+			btf.translateX += ((float)(targetX - btf.translateX)/(4*2));
+			
+		}else{
+			targetX=getTransformX(currentId,i-1);
+			btf.translateX += ((float)(targetX - btf.translateX)/(4*2));
+			
+			//btf.translateX-=10;
 		}
+		
 		if(rightleft==1)
 		{
-			if(btf.translateX>=0)
-			{
-				btf.translateZ-=8;
-			}
-			else
-			{
-				btf.translateZ+=8;
-			}
-			if(Math.abs(btf.translateX)<MC)
-			{
-				btf.rotateY-=4;
-			}
-		}else
-		{
-			if(btf.translateX<=0)
-			{
-				btf.translateZ-=8;
-			}
-			else
-			{
-				btf.translateZ+=8;
-			}
-			if(Math.abs(btf.translateX)<MC)
-			{
-				btf.rotateY+=4;
-			}
+		    targetZ=getTransformZ(currentId,i+1);
+			btf.translateZ += ((float)(targetZ - btf.translateZ)/(5*2));
+			
+//			if(btf.translateX>=0){
+//				btf.translateZ-=8;
+//			}
+//			else{
+//				btf.translateZ+=8;
+//			}
+//			if(Math.abs(btf.translateX)<MC){
+//				btf.rotateY-=4;
+//			}
+		}else{
+			targetZ=getTransformZ(currentId,i-1);
+			btf.translateZ += ((float)(targetZ - btf.translateZ)/(5*2));
+			
+			
+//			if(btf.translateX<=0){
+//				btf.translateZ-=8;
+//			}
+//			else{
+//				btf.translateZ+=8;
+//			}
+//			if(Math.abs(btf.translateX)<MC){
+//				btf.rotateY+=4;
+//			}
 		}
 		
 		if(Math.abs(btf.translateX)<10)
