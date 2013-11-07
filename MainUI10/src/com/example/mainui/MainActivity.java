@@ -10,8 +10,6 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.Shader.TileMode;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,7 +17,9 @@ import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader.TileMode;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -216,14 +216,14 @@ public class MainActivity extends Activity {
 	
 		Matrix mMatrix = new Matrix();
 		endCanvas.setMatrix(mMatrix);
-//		//画阴影效果
-//		Paint shadowPaint=new Paint();
-//		LinearGradient shader = new LinearGradient(0, height-10, width, bitmapWithReflection.getHeight(), 0x70ffffff, 0x00ffffff, TileMode.MIRROR);
-//		shadowPaint.setShader(shader);
-//		shadowPaint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
-//		// 画一个长方形使用油漆与我们的线性梯度
-//		endCanvas.drawRect(0, height-10, width,bitmapWithReflection.getHeight(), shadowPaint);
-//		
+		//画阴影效果
+		Paint shadowPaint=new Paint();
+		LinearGradient shader = new LinearGradient(0, height-10, width, bitmapWithReflection.getHeight(), 0x70ffffff, 0x00ffffff, TileMode.MIRROR);
+		shadowPaint.setShader(shader);
+		shadowPaint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
+		// 画一个长方形使用油漆与我们的线性梯度
+		endCanvas.drawRect(0, height-10, width,bitmapWithReflection.getHeight(), shadowPaint);
+		
 		// 解决图片的锯齿现象
 		canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));  
 		return bitmapWithReflection;
@@ -271,7 +271,7 @@ public class MainActivity extends Activity {
 	 * @param startY	文字范围在Y轴上的起始位置
 	 * @param maxW		文字范围允许最大的宽
 	 * @param maxH		文字范围允许最大的高
-	 * @return			文字画的位置
+	 * @return			文字画的位置 x,y
 	 */
 	public float[] getCenterLoction(Paint mPaint , String showTxt ,float startX , float startY ,float maxW, float maxH){
 		float[] mLoction =new float[2];
@@ -290,12 +290,15 @@ public class MainActivity extends Activity {
 	/**
 	 * 返回传入图片的倒影，scale范围为0 ~ 1
 	 * @param bitmap 传入图片
-	 * @param scale  倒影占原图的比例    
+	 * @param scale  倒影占原图的比例   
 	 * @return 		 倒影图片
 	 */
 	private Bitmap getInvertImage(Bitmap bitmap ,float scale) {
 		if (scale > 1) {
 			scale = 1;
+		}
+		if(scale < 0){
+			 throw new IllegalArgumentException("sacle 范围：0 ~ 1"); 
 		}
 		Matrix matrix = new Matrix();
 		// 解析 ：图片缩放，x轴缩小0.5倍，y轴扩大2.5倍：mMatrix.setScale(0.5f, 2.5f);效果：
