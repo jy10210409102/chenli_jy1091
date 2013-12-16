@@ -6,6 +6,7 @@ package com.example.mainui;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import android.util.Log;
@@ -34,6 +35,7 @@ public class Card {
 		this.cardMap = cardMap;
 		this.radioh = cardMap.height/Constant.HEIGHT;
 		this.radiow = cardMap.width/Constant.WIDTH;
+		Log.e("chenli", "radioh:" + radioh +" radiow:"+radiow + " mCardAddition.high:" +cardMap.height+" mCardAddition.width:"+cardMap.width +  " Constant.HEIGHT:"+Constant.HEIGHT);
 		initData();
 	}
 	
@@ -49,6 +51,7 @@ public class Card {
 		vCount = 4;
 		float w = (cardMap.width*radiow);
 		float h = (cardMap.height*radioh);
+		Log.e("chenli", "Card:宽 "+ w + " 高：" + h );
 		float [] vertexs = {
 				-w,-h,0,//4
 				w,-h,0,//3

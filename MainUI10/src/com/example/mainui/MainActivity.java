@@ -181,7 +181,6 @@ public class MainActivity extends Activity {
 		//画有效图片有效图片起始位置    x:14 y:12    有效图片大小 142 140
 		bitmap =drawSetSizePhoto(bitmap,142,140);
 		canvas.drawBitmap(bitmap, 14, 12, null);
-		
 		// 画出原始图像
 		canvas.drawBitmap(defBitmap, 0, 0, null);//画原始图片
 		//原始图片上画上歌曲信息    歌曲名起始位置 15  119    允许的最大大小：141 32

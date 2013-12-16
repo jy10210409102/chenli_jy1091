@@ -28,7 +28,7 @@ import com.example.mainui.TransformControl.PlayingListener;
  * 显示主类<br/>
  * GLSurfaceView的大部分代码和代码结构设计对你在以后的编码过程中设计自己的功能模块时有很好的借鉴作用。
  * @author Administrator
- *
+ * 
  */
 public class CardSurfaceView extends GLSurfaceView {
 																	//有两个缓存 一个背后加载 一个当前显示
@@ -271,6 +271,10 @@ public void onResume() {
 		}
 	}
 	public class MyRenderer implements Renderer {
+		
+		public MyRenderer(){
+			Log.e("chenli","MyRendererMyRendererMyRendererMyRendererMyRendererMyRenderer" );
+		}
 		private Card [] cards;
 		public void refereshList(int size,int id){
 			currentId = id;
@@ -288,7 +292,7 @@ public void onResume() {
 		
 		//record
 		/**
-		 * 定义实际的绘图操作    一直在跑
+		 * 定义实际的绘图操作     一直在跑
 		 */
 		public void onDrawFrame(GL10 gl) {
 			//语句的作用是用当前缓冲区清除值，也就是glClearColor或者glClearDepth等函数所指定的值来清除指定的缓冲区
